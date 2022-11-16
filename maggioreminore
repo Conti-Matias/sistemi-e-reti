@@ -1,0 +1,76 @@
+org 100h
+
+.model small
+.stack 100h
+
+.data
+    a db ?
+    b db ?
+    input1 db 'inserisci il primo numero',,13,10,'$'  ;dichiarare le variabili
+    input2 db 'inserisci il secondo numero',,13,10,'$'   
+    output db ' e il maggiore',,13,10,'$' 
+    capo db 13,10,'$'
+
+.code
+    .startup 
+        mov ax,@data ;sposto .data
+        mov ds,ax
+        
+        mov ah, 09h
+        mov dx, offset input1   
+        int 21h
+        
+        mov ah, 01h ;input
+        int 21h      
+        mov a, al
+        
+        mov ah, 09h 
+        mov dx, offset capo ;formattazione      
+        int 21h
+        
+        mov ah, 09h
+        mov dx,offset input1 ;richiesta di input       
+        int 21h
+        
+        mov ah,01h
+        int 21h   ;input              
+        mov b,al
+        
+        mov ah, 09h
+        mov dx, offset capo     
+        int 21h
+                
+        mov al,b ;sposto b in al               
+        
+    
+        cmp a,al
+        jg stampaA ;confronto le variabili             
+    
+        stampaB:
+        mov ah,02h
+        mov dl,b    ;se a e' minore        
+        int 21h
+        jmp end
+        
+        stampaA:
+        mov ah,02h
+        mov dl,a ;se a e' maggiore           
+        int 21h
+            
+        
+        end:
+        mov ah, 09h
+        mov dx,offset output ;stringa output    
+        int 21h
+            
+        mov ah, 4ch
+        int 21h
+
+end
+
+
+
+
+
+
+
